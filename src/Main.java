@@ -1,5 +1,5 @@
 import Entities.Estoque;
-import Entities.Produto;
+
 
 import java.util.Scanner;
 
@@ -30,7 +30,7 @@ public class Main {
                     Estoque.cadastrarProduto(estoque, scanner);
                     break;
                 case 2:
-                    Estoque.realizarVenda(estoque, scanner);
+                    Estoque.realizarVenda(scanner);
                     break;
                 case 3:
                     estoque.listarProdutos();
@@ -39,7 +39,7 @@ public class Main {
                     listarProdutosEstoqueBaixo(estoque, scanner);
                     break;
                 case 5:
-                    buscarProduto(estoque, scanner);
+                    buscarProduto(scanner);
                     break;
                 case 6:
                     double valorTotalEstoque = estoque.calcularValorTotalEstoque();

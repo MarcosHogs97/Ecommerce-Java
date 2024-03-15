@@ -125,7 +125,7 @@ public class Estoque {
 
         String nome = cadastrarNome(scanner);
 
-        String codigo = cadastrarCodigo(estoque, scanner);
+        String codigo = cadastrarCodigo(scanner);
 
         double valor = solicitarPreco(scanner);
 
@@ -139,7 +139,7 @@ public class Estoque {
     }
 
     // Método para realizar uma venda validando se o valor informado é menor que a quantidade em estoque e maior que 0
-    public static void realizarVenda(Estoque estoque, Scanner scanner) {
+    public static void realizarVenda(Scanner scanner) {
         System.out.print("Digite o código ou nome do produto: ");
         String codigoOuNome = scanner.nextLine();
 
@@ -165,7 +165,7 @@ public class Estoque {
     }
 
     // Método para buscar um produto pelo código ou nome
-    public static void buscarProduto(Estoque estoque, Scanner scanner) {
+    public static void buscarProduto(Scanner scanner) {
         System.out.print("Digite o código ou nome do produto: ");
         String codigoOuNome = scanner.nextLine();
 
@@ -210,7 +210,7 @@ public class Estoque {
     }
 
     // Método para buscar um produto pelo código ou nome
-    private static String cadastrarCodigo(Estoque estoque, Scanner scanner) {
+    private static String cadastrarCodigo(Scanner scanner) {
         String codigo;
         while (true) {
             System.out.print("Digite o código do produto: ");
