@@ -39,17 +39,20 @@ public class Estoque {
 
     // Método para realizar uma venda e atualizar o estoque
     public void realizarVenda(String codigoOuNome, int quantidade) {
-
         Produto produto = buscarProduto(codigoOuNome, "");
         if (produto != null) {
+            int quantidadeAntes = produto.getQuantidadeEstoque(); // Armazena a quantidade antes da venda
             // Verifica se há estoque suficiente para a venda
             if (produto.getQuantidadeEstoque() >= quantidade) {
                 produto.venderProduto(quantidade);
-                System.out.println("\nVenda realizada com sucesso.");
+                System.out.println("Venda realizada com sucesso.");
                 // Verifica se o estoque ficou abaixo do mínimo
                 if (produto.getQuantidadeEstoque() <= quantidadeMinimaEmEstoque) {
                     System.out.println("Produto com estoque baixo!");
                 }
+                // Mostra o estado do produto antes e depois da venda
+                System.out.println("Antes da venda: " + quantidadeAntes + " unidades." + "  Depois da venda: " + produto.getQuantidadeEstoque() + " unidades.");
+
             } else {
                 System.out.println("\nEstoque insuficiente para realizar a venda.");
             }
@@ -267,6 +270,16 @@ public class Estoque {
     }
 
     public int escolhaMenu(Scanner scanner) {
+        produtos.add(new Produto("Rastreador ZIC32", "FFG5789", 675.90, 86, "XP INC"));
+        produtos.add(new Produto("Cabo Man 35L2", "JJS5420", 62.15, 92, "Tech Vox New"));
+        produtos.add(new Produto("Testador FGT45 Super", "OYT5587", 755.20, 890, "Shudo Link Vok"));
+        produtos.add(new Produto("Fixador de RJ45_KAT6", "SAE2013", 35.66, 72, "Kimoro Tech Six"));
+        produtos.add(new Produto("Alicate PTG32K Pro", "GGW5219", 225.89, 22, "Mr Hardware Inc"));
+        produtos.add(new Produto("Caixa de som PLX 32", "PXT4510", 375.50, 35, "SHIDU"));
+        produtos.add(new Produto("Fone de ouvido", "bPL3510", 95.50, 22, "Bell"));
+        produtos.add(new Produto("Caixa amplificadora KZ 32", "PLO2030", 550.90, 70, "Zekee"));
+        produtos.add(new Produto("Plug KJG 32L", "TGR4520", 32.99, 70, "Ballu"));
+        produtos.add(new Produto("GPS JUK32", "DDF7721", 375.90, 42, "FOXBlue"));
         int escolhaMenu;
         while (true) {
             System.out.println("\nGerenciamento de Estoque\n1: Cadastrar Produto\n2: Realizar Venda\n3: Listar Produtos\n4: Listar Produtos com Estoque Baixo\n5: Buscar Produto\n6: Calcular Valor Total do Estoque\n0: Sair\nInforme o que deseja: ");
