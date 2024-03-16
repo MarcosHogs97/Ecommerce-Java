@@ -47,7 +47,7 @@ public class Estoque {
                 produto.venderProduto(quantidade);
                 System.out.println("\nVenda realizada com sucesso.");
                 // Verifica se o estoque ficou abaixo do mínimo
-                if (produto.getQuantidadeEstoque() <= quantidadeMinimaEmEstoque ) {
+                if (produto.getQuantidadeEstoque() <= quantidadeMinimaEmEstoque) {
                     System.out.println("Produto com estoque baixo!");
                 }
             } else {
@@ -128,6 +128,7 @@ public class Estoque {
         }
         return valorTotal;
     }
+
     // Método para realizar uma venda validando se o valor informado é menor que a quantidade em estoque e maior que 0
     public void realizarVenda(Scanner scanner) {
         System.out.print("Digite o código ou nome do produto: ");
@@ -269,17 +270,24 @@ public class Estoque {
         int escolhaMenu;
         while (true) {
             System.out.println("\nGerenciamento de Estoque\n1: Cadastrar Produto\n2: Realizar Venda\n3: Listar Produtos\n4: Listar Produtos com Estoque Baixo\n5: Buscar Produto\n6: Calcular Valor Total do Estoque\n0: Sair\nInforme o que deseja: ");
-            String entradaEscolha = scanner.next().trim();
-            // Verifica se a entrada pode ser convertida para um número
-            try {
-                escolhaMenu = Integer.parseInt(entradaEscolha);
-            } catch (NumberFormatException e) {
-                System.out.println("ERRO!: A escolha informada não é válida. Digite um número válido entre 0 e 6.");
+            String entradaEscolha = scanner.nextLine();
+
+            if (entradaEscolha.isEmpty()) {
+                System.out.println("ERRO!: A escolha informada não é válida. Digite um número entre 0 e 6.");
                 continue;
             }
+
+            // Verifica se a entrada é um número inteiro
+            if (!entradaEscolha.matches("\\d+")) {
+                System.out.println("ERRO!: A escolha informada não é válida. Digite um número entre 0 e 6.");
+                continue;
+            }
+            // Converte a entrada para um número inteiro
+            escolhaMenu = Integer.parseInt(entradaEscolha);
+
             // Verifica se a escolha está dentro do intervalo permitido
             if (escolhaMenu < 0 || escolhaMenu > 6) {
-                System.out.println("**** ERRO!: INFORME UMA ESCOLHA VALIDA! ****");
+                System.out.println("ERRO!: A escolha informada está fora do intervalo permitido. Digite um número entre 0 e 6.");
                 continue;
             }
 
@@ -289,4 +297,3 @@ public class Estoque {
     }
 
 }
-

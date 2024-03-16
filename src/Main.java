@@ -10,7 +10,6 @@ public class Main {
         while (true) {
 
             int opcao = estoque.escolhaMenu(scanner);
-            scanner.nextLine();
             // Executa a opção escolhida pelo usuário
             switch (opcao) {
                 case 1:
