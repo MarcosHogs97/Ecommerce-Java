@@ -22,7 +22,7 @@ public class Main {
             System.out.println("0: Sair");
             System.out.print("Informe oque deseja:  ");
 
-            int opcao = scanner.nextInt();
+            int opcao = escolhaMenu(scanner);
             scanner.nextLine();
             // Executa a opção escolhida pelo usuário
             switch (opcao) {
