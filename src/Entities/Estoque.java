@@ -4,21 +4,29 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Estoque {
-    protected static ArrayList<Produto> produtos = null;
+    protected ArrayList<Produto> produtos;
+
+    protected int quantidadeMinimaEmEstoque;
+
+    // No construtor, inicialize a lista de produtos
+    public Estoque() {
+        this.produtos = new ArrayList<>();
+        this.quantidadeMinimaEmEstoque = 10;
+    }
 
     public ArrayList<Produto> getProdutos() {
         return produtos;
     }
 
-    // Definindo a quantidade mínima como constante de classe
-    private static final int quantidadeMinimaEmEstoque = 10;
-
-    // Construtor que inicializa a lista de produtos
-    public Estoque() {
-        produtos = new ArrayList<>();
+    public void criarProduto(Scanner scanner) {
+        String nome = cadastrarNome(scanner);
+        String codigo = cadastrarCodigo(scanner);
+        double valor = solicitarPreco(scanner);
+        int quantidadeEstoque = solicitarQuantidade(scanner);
+        String fornecedor = cadastrarFornecedor(scanner);
+        cadastrarProduto(new Produto(nome, codigo, valor, quantidadeEstoque, fornecedor));
     }
 
-    // Método para cadastrar um novo produto no estoque
     public void cadastrarProduto(Produto produto) {
         // Verifica se o produto já está cadastrado pelo código
         if (buscarProduto(produto.getCodigo(), produto.getNome()) == null) {
@@ -30,7 +38,7 @@ public class Estoque {
     }
 
     // Método para realizar uma venda e atualizar o estoque
-    public static void realizarVenda(String codigoOuNome, int quantidade) {
+    public void realizarVenda(String codigoOuNome, int quantidade) {
 
         Produto produto = buscarProduto(codigoOuNome, "");
         if (produto != null) {
@@ -39,7 +47,7 @@ public class Estoque {
                 produto.venderProduto(quantidade);
                 System.out.println("\nVenda realizada com sucesso.");
                 // Verifica se o estoque ficou abaixo do mínimo
-                if (produto.getQuantidadeEstoque() <= quantidadeMinimaEmEstoque) {
+                if (produto.getQuantidadeEstoque() <= quantidadeMinimaEmEstoque ) {
                     System.out.println("Produto com estoque baixo!");
                 }
             } else {
@@ -50,7 +58,7 @@ public class Estoque {
         }
     }
 
-    // para listar todos os produtos no estoque
+    // Método para listar todos os produtos no estoque
     public void listarProdutos() {
         if (getProdutos().isEmpty()) {
             System.out.println("\nNao a produtos cadastrado");
@@ -59,8 +67,8 @@ public class Estoque {
             for (Produto produto : produtos) {
                 System.out.println(produto);
             }
-            listarProdutosEstoqueBaixo();
         }
+        listarProdutosEstoqueBaixo();
     }
 
     // Método para listar produtos com estoque abaixo de um valor definido
@@ -79,6 +87,7 @@ public class Estoque {
             System.out.println("\nNenhum produto com estoque baixo.");
         }
     }
+
 
     // Método para listar produtos com estoque abaixo da quantidade mínima
     public void listarProdutosEstoqueBaixo() {
@@ -102,7 +111,7 @@ public class Estoque {
     }
 
     // Método para buscar um produto pelo código ou nome
-    public static Produto buscarProduto(String codigo, String nome) {
+    public Produto buscarProduto(String codigo, String nome) {
         for (Produto produto : produtos) {
             if (produto.getCodigo().equals(codigo) || produto.getNome().startsWith(nome)) {
                 return produto;
@@ -119,27 +128,8 @@ public class Estoque {
         }
         return valorTotal;
     }
-
-    // Método para cadastrar um novo produto verificando se o código ja foi cadastrado, se a quantidade e o preço é positivo
-    public static void cadastrarProduto(Estoque estoque, Scanner scanner) {
-
-        String nome = cadastrarNome(scanner);
-
-        String codigo = cadastrarCodigo(scanner);
-
-        double valor = solicitarPreco(scanner);
-
-        int quantidadeEstoque = solicitarQuantidade(scanner);
-
-        String fornecedor = cadastrarFornecedor(scanner);
-
-        // Cria um novo produto e o guarda no estoque
-        Produto produto = new Produto(nome, codigo, valor, quantidadeEstoque, fornecedor);
-        estoque.cadastrarProduto(produto);
-    }
-
     // Método para realizar uma venda validando se o valor informado é menor que a quantidade em estoque e maior que 0
-    public static void realizarVenda(Scanner scanner) {
+    public void realizarVenda(Scanner scanner) {
         System.out.print("Digite o código ou nome do produto: ");
         String codigoOuNome = scanner.nextLine();
 
@@ -158,14 +148,14 @@ public class Estoque {
     }
 
     // Método para listar produtos com estoque abaixo de um valor mínimo
-    public static void listarProdutosEstoqueBaixo(Estoque estoque, Scanner scanner) {
+    public void listarProdutosEstoqueBaixo(Scanner scanner) {
         int quantidadeMinima = solicitarQuantidade(scanner);
 
-        estoque.listarProdutosEstoqueBaixo(quantidadeMinima);
+        listarProdutosEstoqueBaixo(quantidadeMinima);
     }
 
     // Método para buscar um produto pelo código ou nome
-    public static void buscarProduto(Scanner scanner) {
+    public void buscarProduto(Scanner scanner) {
         System.out.print("Digite o código ou nome do produto: ");
         String codigoOuNome = scanner.nextLine();
 
@@ -178,7 +168,7 @@ public class Estoque {
     }
 
     // Método para cadastrar o nome do produto
-    private static String cadastrarNome(Scanner scanner) {
+    private String cadastrarNome(Scanner scanner) {
         String nome;
         while (true) {
             System.out.print("Digite o nome do produto: ");
@@ -194,7 +184,7 @@ public class Estoque {
     }
 
     // Método para cadastrar o nome do produto
-    private static String cadastrarFornecedor(Scanner scanner) {
+    private String cadastrarFornecedor(Scanner scanner) {
         String fornecedor;
         while (true) {
             System.out.print("Digite o nome do fornecedor: ");
@@ -210,7 +200,7 @@ public class Estoque {
     }
 
     // Método para buscar um produto pelo código ou nome
-    private static String cadastrarCodigo(Scanner scanner) {
+    private String cadastrarCodigo(Scanner scanner) {
         String codigo;
         while (true) {
             System.out.print("Digite o código do produto: ");
@@ -230,60 +220,73 @@ public class Estoque {
     }
 
     // Método para solicitar o preço do produto, garantindo que seja um valor positivo
-    private static double solicitarPreco(Scanner scanner) {
+    private double solicitarPreco(Scanner scanner) {
         double valor;
         while (true) {
             System.out.print("Digite o preço do produto: ");
             String entradaValor = scanner.nextLine();
 
-            if (entradaValor.isEmpty()) {
-                System.out.println("ERRO!: INFORME O VALOR DO PRODUTO!");
+            try {
+                valor = Double.parseDouble(entradaValor);
+            } catch (NumberFormatException e) {
+                System.out.println("ERRO!: O valor informado não é válido. Digite um número válido.");
                 continue;
             }
-            entradaValor = entradaValor.replace( ',', '.');
-            valor = Double.parseDouble(entradaValor);
-            if (valor > 0) {
-                break;
-            } else {
+            if (valor <= 0) {
                 System.out.println("O preço deve ser um valor positivo.");
+            } else {
+                break;
             }
         }
         return valor;
     }
 
     // Método para solicitar a quantidade do produto, garantindo que seja um valor positivo inteiro
-    private static int solicitarQuantidade(Scanner scanner) {
+    private int solicitarQuantidade(Scanner scanner) {
         int quantidade;
         while (true) {
             System.out.print("Digite a quantidade do produto: ");
             String entradaQuantidade = scanner.nextLine();
 
-            if (entradaQuantidade.isEmpty()) {
-                System.out.println("ERRO!: INFORME A QUANTIDADE DO PRODUTO EM ESTOQUE!");
+            // Verifica se a entrada pode ser convertida para um número
+            try {
+                quantidade = Integer.parseInt(entradaQuantidade);
+            } catch (NumberFormatException e) {
+                System.out.println("ERRO!: A quantidade informada não é válida. Digite um número válido.");
                 continue;
             }
-            quantidade = Integer.parseInt(entradaQuantidade);
-            if (quantidade > 0) {
-                break;
+
+            if (quantidade <= 0) {
+                System.out.println("A quantidade deve ser um valor positivo.");
             } else {
-                System.out.println("O quantidade deve ser um valor positivo.");
+                break;
             }
         }
         return quantidade;
     }
 
-    public static int escolhaMenu(Scanner scanner) {
+    public int escolhaMenu(Scanner scanner) {
         int escolhaMenu;
         while (true) {
             System.out.println("\nGerenciamento de Estoque\n1: Cadastrar Produto\n2: Realizar Venda\n3: Listar Produtos\n4: Listar Produtos com Estoque Baixo\n5: Buscar Produto\n6: Calcular Valor Total do Estoque\n0: Sair\nInforme o que deseja: ");
-            String entradaEscolha = scanner.next().trim(); // Removendo espaços em branco extras
-            if (!entradaEscolha.matches("[0-6]")) {
+            String entradaEscolha = scanner.next().trim();
+            // Verifica se a entrada pode ser convertida para um número
+            try {
+                escolhaMenu = Integer.parseInt(entradaEscolha);
+            } catch (NumberFormatException e) {
+                System.out.println("ERRO!: A escolha informada não é válida. Digite um número válido entre 0 e 6.");
+                continue;
+            }
+            // Verifica se a escolha está dentro do intervalo permitido
+            if (escolhaMenu < 0 || escolhaMenu > 6) {
                 System.out.println("**** ERRO!: INFORME UMA ESCOLHA VALIDA! ****");
                 continue;
             }
-            escolhaMenu = Integer.parseInt(entradaEscolha);
+
             break;
         }
         return escolhaMenu;
     }
+
 }
+
