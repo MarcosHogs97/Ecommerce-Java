@@ -221,22 +221,22 @@ public class Estoque {
     }
 
     // Método para solicitar o preço do produto, garantindo que seja um valor positivo
-    private double solicitarPreco(Scanner scanner) {
+    private static double solicitarPreco(Scanner scanner) {
         double valor;
         while (true) {
             System.out.print("Digite o preço do produto: ");
             String entradaValor = scanner.nextLine();
 
-            try {
-                valor = Double.parseDouble(entradaValor);
-            } catch (NumberFormatException e) {
-                System.out.println("ERRO!: O valor informado não é válido. Digite um número válido.");
+            if (entradaValor.isEmpty()) {
+                System.out.println("ERRO!: INFORME O VALOR DO PRODUTO!");
                 continue;
             }
-            if (valor <= 0) {
-                System.out.println("O preço deve ser um valor positivo.");
-            } else {
+            entradaValor = entradaValor.replace( ',', '.');
+            valor = Double.parseDouble(entradaValor);
+            if (valor > 0) {
                 break;
+            } else {
+                System.out.println("O preço deve ser um valor positivo.");
             }
         }
         return valor;
