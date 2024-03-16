@@ -276,19 +276,14 @@ public class Estoque {
         int escolhaMenu;
         while (true) {
             System.out.println("\nGerenciamento de Estoque\n1: Cadastrar Produto\n2: Realizar Venda\n3: Listar Produtos\n4: Listar Produtos com Estoque Baixo\n5: Buscar Produto\n6: Calcular Valor Total do Estoque\n0: Sair\nInforme o que deseja: ");
-            String entradaEscolha = scanner.nextLine();
-            if (entradaEscolha.isEmpty()) {
+            String entradaEscolha = scanner.next().trim(); // Removendo espaços em branco extras
+            if (!entradaEscolha.matches("[0-6]")) {
                 System.out.println("**** ERRO!: INFORME UMA ESCOLHA VALIDA! ****");
                 continue;
             }
             escolhaMenu = Integer.parseInt(entradaEscolha);
-            if (escolhaMenu < 0 || escolhaMenu > 6) {
-                System.out.println("**** ERRO!: INFORME UMA ESCOLHA VALIDA! ****");
-            } else {
-                break;
-            }
+            break;
         }
         return escolhaMenu;
     }
 }
-
